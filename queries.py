@@ -71,16 +71,32 @@ def Q5Pandas():
     return committees_with_pops.sort_values('RECEIPTS_PER_CAPITA',ascending=False)[['CMTE_NM','CMTE_ST','TTL_RECEIPTS','RECEIPTS_PER_CAPITA']]
 
 def Q6Pandas():
-    """
-    TODO: Write your Pandas query here, return a dataframe to answer the question
-    """
-    return None
+    df = pd.read_csv("data/candidate.txt", delimiter = "|")
+    status_mask = df['CAND_STATUS'].isin(['C','N'])
+    year_mask = df['CAND_ELECTION_YR'] == 2016
+    office_mask = df['CAND_OFFICE'] == "H"
+    mask = status_mask & year_mask & office_mask
+    house_candidates = df[mask][['CAND_NAME','CAND_PTY_AFFILIATION','CAND_ID']]
+
+    receipts = pd.read_csv("data/cand_summary.txt", delimiter = "|")
+    candidates_with_receipts = pd.merge(house_candidates, receipts)[['CAND_NAME','CAND_PTY_AFFILIATION','TTL_INDIV_CONTRIB','TTL_RECEIPTS']]
+    candidates_with_receipts = candidates_with_receipts[candidates_with_receipts['TTL_RECEIPTS'] > 100000]
+    candidates_with_receipts['RATIO_INDIV'] = candidates_with_receipts['TTL_INDIV_CONTRIB']/candidates_with_receipts['TTL_RECEIPTS']
+    return candidates_with_receipts.sort_values('RATIO_INDIV')[:10]
 
 def Q7Pandas():
-    """
-    TODO: Write your Pandas query here, return a dataframe to answer the question
-    """
-    return None
+    df = pd.read_csv("data/candidate.txt", delimiter = "|")
+    status_mask = df['CAND_STATUS'].isin(['C','N'])
+    year_mask = df['CAND_ELECTION_YR'] == 2016
+    office_mask = df['CAND_OFFICE'] == "S"
+    mask = status_mask & year_mask & office_mask
+    senate_candidates = df[mask][['CAND_NAME','CAND_PTY_AFFILIATION','CAND_ID']]
+
+    receipts = pd.read_csv("data/cand_summary.txt", delimiter = "|")
+    candidates_with_receipts = pd.merge(senate_candidates, receipts)[['CAND_NAME','CAND_PTY_AFFILIATION','TTL_INDIV_CONTRIB','TTL_RECEIPTS']]
+    parties_with_receipts = candidates_with_receipts.groupby('CAND_PTY_AFFILIATION').sum()
+    parties_with_receipts['RATIO_INDIV'] = parties_with_receipts['TTL_INDIV_CONTRIB']/parties_with_receipts['TTL_RECEIPTS']
+    return parties_with_receipts.sort_values('RATIO_INDIV',ascending=False)[:10]
 
 pandas_queries = [Q1Pandas, Q2Pandas, Q3Pandas, Q4Pandas, Q5Pandas, Q6Pandas, Q7Pandas]
 if __name__ == "__main__":
