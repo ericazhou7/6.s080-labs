@@ -68,7 +68,7 @@ def Q5Pandas():
     state_pops = populations.groupby('state').sum().reset_index()[['state','population']]
     committees_with_pops = pd.merge(committees_with_receipts, state_pops, left_on = 'CMTE_ST', right_on = 'state')
     committees_with_pops['RECEIPTS_PER_CAPITA'] = committees_with_pops['TTL_RECEIPTS']/committees_with_pops['population']
-    return committees_with_pops.sort_values('RECEIPTS_PER_CAPITA',ascending=False)[['CMTE_NM','CMTE_ST','TTL_RECEIPTS','RECEIPTS_PER_CAPITA']]
+    return committees_with_pops.sort_values('RECEIPTS_PER_CAPITA',ascending=False)[['CMTE_NM','CMTE_ST','TTL_RECEIPTS','RECEIPTS_PER_CAPITA']][:20]
 
 def Q6Pandas():
     df = pd.read_csv("data/candidate.txt", delimiter = "|")
@@ -90,10 +90,10 @@ def Q7Pandas():
     year_mask = df['CAND_ELECTION_YR'] == 2016
     office_mask = df['CAND_OFFICE'] == "S"
     mask = status_mask & year_mask & office_mask
-    senate_candidates = df[mask][['CAND_NAME','CAND_PTY_AFFILIATION','CAND_ID']]
+    senate_candidates = df[mask][['CAND_PTY_AFFILIATION','CAND_ID']]
 
     receipts = pd.read_csv("data/cand_summary.txt", delimiter = "|")
-    candidates_with_receipts = pd.merge(senate_candidates, receipts)[['CAND_NAME','CAND_PTY_AFFILIATION','TTL_INDIV_CONTRIB','TTL_RECEIPTS']]
+    candidates_with_receipts = pd.merge(senate_candidates, receipts)[['CAND_PTY_AFFILIATION','TTL_INDIV_CONTRIB','TTL_RECEIPTS']]
     parties_with_receipts = candidates_with_receipts.groupby('CAND_PTY_AFFILIATION').sum()
     parties_with_receipts['RATIO_INDIV'] = parties_with_receipts['TTL_INDIV_CONTRIB']/parties_with_receipts['TTL_RECEIPTS']
     return parties_with_receipts.sort_values('RATIO_INDIV',ascending=False)[:10]

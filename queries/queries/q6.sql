@@ -1,2 +1,15 @@
---replace this with your query
-SELECT 1;
+SELECT
+          candidate.CAND_NAME,
+          CAND_PTY_AFFILIATION,
+          TTL_INDIV_CONTRIB,
+          TTL_RECEIPTS,
+          TTL_INDIV_CONTRIB/TTL_RECEIPTS as RATIO_INDIV
+  FROM
+          CANDIDATE join CAND_SUMMARY on candidate.cand_id = cand_summary.cand_id
+  WHERE CAND_OFFICE = 'H'
+  AND CAND_STATUS IN ('C', 'N')
+  AND CAND_ELECTION_YR = 2016
+  AND TTL_RECEIPTS > 100000
+  ORDER BY
+          RATIO_INDIV
+  LIMIT 10;
