@@ -1,9 +1,21 @@
-select cand_name, cand_office_st, SUM(TRANSACTION_AMT) from indiv_contrib a
-join candidate b on a.cmte_id = b.cand_pcc 
-where ENTITY_TP = "IND" AND CAND_OFFICE = 'S'
-    AND CAND_STATUS IN ('C', 'N')
-    AND CAND_ELECTION_YR = 2016
-    AND a.state !=  b.cand_office_st
-group by 1,2
-order by 3 desc
-limit 5;
+SELECT
+        CAND_NAME,
+        CAND_OFFICE_ST,
+        SUM(TRANSACTION_AMT)
+    FROM
+        INDIV_CONTRIB
+    JOIN
+        CANDIDATE
+            ON INDIV_CONTRIB.CMTE_ID = CANDIDATE.CAND_PCC
+    WHERE
+        ENTITY_TP = "IND"
+        AND CAND_OFFICE = 'S'
+        AND CAND_STATUS IN ('C', 'N')
+        AND CAND_ELECTION_YR = 2016
+        AND INDIV_CONTRIB.STATE !=  CANDIDATE.CAND_OFFICE_ST
+    GROUP BY
+        1,
+        2
+    ORDER BY
+        3 DESC
+    LIMIT 5;

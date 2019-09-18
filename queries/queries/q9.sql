@@ -1,6 +1,16 @@
-select a.STATE, sum(TRANSACTION_AMT)/population as AMT_PER_CAPITA from indiv_contrib a
-where ENTITY_TP = "IND" and TRANSACTION_TP = "10"
-join dist_pop b on a.STATE = b.state 
-group by 1
-order by 2 desc
-limit 5;
+SELECT
+        INDIV_CONTRIB.STATE,
+        SUM(TRANSACTION_AMT)/POPULATION AS AMT_PER_CAPITA
+    FROM
+        INDIV_CONTRIB
+    JOIN
+        DIST_POP
+            ON INDIV_CONTRIB.STATE = DIST_POP.STATE
+    WHERE
+        ENTITY_TP = "IND"
+        AND TRANSACTION_TP = "10"
+    GROUP BY
+        1
+    ORDER BY
+        2 DESC
+    LIMIT 5;
