@@ -1,0 +1,1 @@
+tr -d '\n' < data/wmbr.txt | sed "s/Date:/|/g" | tr '|' '\n' | sed -e "s/Artist:/|/" -e "s/Song:/|/" -e "s/Album:/|/" -e "s/Label:/|/" -e "s/Show:/|/" -e "s/DJ:/|/" > data/wmbr-clean.txt
