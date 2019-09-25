@@ -1,1 +1,0 @@
-awk -F',' '{print $1}' data/synsets-clean.txt | sort -u | wc -l

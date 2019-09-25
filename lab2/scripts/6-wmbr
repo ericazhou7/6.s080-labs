@@ -1,0 +1,2 @@
+(echo "Date|Artist|Song|Album|Label|Show|DJ" && tr -d '\n' < ../data/wmbr.txt | sed "s/Date:/|/g" | tr '|' '\n' | sed -e "s/Artist:/|/" -e "s/Song:/|/" -e "s/Album:/|/" -e "s/Label:/|/" -e "s/Show:/|/" -e "s/DJ:/|/") > ../data/wmbr-clean.txt
+cat ../data/wmbr-clean.txt | sed -e "s/Ellish/Eilish/" -e "s/billie eilish/Billie Eilish/" -e "s/Rosalia/ROSALIA/" -e "s/James Black/James Blake/"| awk -F '|' 'BEGIN{OFS="|"} {gsub(/and/,",",$2);gsub(/\&/,",",$2);if (match($3,"\(feat. .*\)") > 0) $2=$2 "," substr($3, RSTART+7, RLENGTH-8)} {print}' > ../data/wmbr-cleaner.txt

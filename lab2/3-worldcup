@@ -1,1 +1,0 @@
-egrep '[[:upper:]],1,' data/worldcup-clean.csv | cut -c1-3 | uniq -c
