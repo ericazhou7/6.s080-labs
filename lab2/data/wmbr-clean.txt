@@ -1,3 +1,5 @@
+Date|Artist|Song|Album|Label|Show|DJ
+
 Nov 22, 2017|Willow Smith|Wait a Minute [slowed]| | |[insert label here]|Joana
 Jul 11, 2018|Childish Gambino|Summertime Magic|Summer Pack - Single| |[insert label here]|Joana
 Jul 11, 2018|Childish Gambino|Feels Like Summer|Summer Pack - Single| |[insert label here]|Joana
